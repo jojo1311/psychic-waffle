@@ -1,2 +1,2 @@
 # psychic-waffle
-Telepathically making waffles
+Telepathically making waffles 🧇
