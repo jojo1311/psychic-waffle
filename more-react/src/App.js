@@ -5,16 +5,26 @@ class App extends Component {
   static allowedChars = /[a-zA-Z0-9\- .:=;!%]/;
   constructor(props) {
     super(props);
-    this.state = { username: '' };
-    this.state = { password: '', passwordComment: null };
+    this.state = {
+      username: '', password: '', passwordComment: null,
+      selection:'', getSpam: true, interest: '', shortBio: ''  };
     this.logIt = this.logIt.bind(this);
+    this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+    this.updateSelection = this.updateSelection.bind(this);
+    this.updateCheckbox = this.updateCheckbox.bind(this);
+     this.updateRadioButtons = this.updateRadioButtons.bind(this);
+    this.updateShortBio = this.updateShortBio.bind(this);
   }
 
   logIt(event) {
     event.preventDefault();
-    console.log('submit button clicked with password ' + this.state.password);
+    console.log('submit button clicked with state: ');
+    console.log(this.state);
     
+  }
+  updateUsername(event) {
+    this.setState({ username: event.target.value });
   }
   updatePassword(event) {
     //drop unallowable characters
@@ -30,20 +40,55 @@ class App extends Component {
     }
     this.setState({ password: newPassword, passwordComment: comment });
   }
+  updateSelection(event) {
+    this.setState({ selection: event.target.value });
+  }
+  updateRadioButtons(event) {
+    this.setState({ interest: event.target.value });
+  }
+  updateCheckbox(event) {
+    this.setState({ getSpam: event.target.checked });
+  }
+  updateShortBio(event) {
+    this.setState({ shortBio: event.target.value });
+  }
 
   render() {
     return (
       <div>
         <h1>Registration Form</h1>
         <form>
+        <label>Username </label>
+        <input type="text" value={this.state.username} onChange={this.updateUsername} /> <br /><br />
+        <label>Password </label>
+        <input type="password" value={this.state.password} onChange={this.updatePassword} /> <br />
+        { this.state.passwordComment}<br/><br/>
+        
+        <label>Sign up </label>
+          <select value={this.state.selection} onChange={this.updateSelection}>
+            <option value="links">Links to New videos Free</option>
+            <option value="news">Super-Valuable NewsLetter</option>
+            <option value="course">Online Step by Step course</option>
+            <option value="coach">One on one expert coaching</option>
+          </select> <br /> <br />
+          I am <strong>most </strong> interested in:&nbsp;
+          <input type="radio" name="interest" value="Justice" onChange={this.updateRadioButtons} checked={this.state.interest === 'Justice'} />
+          Justice&nbsp;
+          <input type="radio" name="interest" value="Freedom" onChange={this.updateRadioButtons} checked={this.state.interest === 'Freedom'} />
+          Freedom&nbsp;
+          <input type="radio" name="interest" value="Equanimity" onChange={this.updateRadioButtons} checked={this.state.interest === 'Equanimity'} />
+          Equanimity&nbsp;
+        
+          <br /><br />
           
-          <label>Password </label>
-          <input type="password" value={this.state.password} onChange={this.updatePassword} /> <br />
+          Please sign me up for your spam emails &nbsp;
+          <input type="checkbox" checked={this.state.getSpam} onChange={this.updateCheckbox} /> <br /><br /><br />
           
-          { this.state.passwordComment}
-          <button onClick={this.logIt}>Submit password</button>
+          Provide an optional short bio:<br />
+          <textarea rows="4" cols="50" value={this.state.shortBio} onChange={this.updateShortBio}/> <br /><br /><br />
+        <button onClick={this.logIt}>Submit password</button>
           
-      
+
         </form>
       
       </div>
